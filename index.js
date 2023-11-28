@@ -28,7 +28,8 @@ document.getElementById("journalForm").addEventListener("submit", function(event
     const text = document.getElementById("entry").value;
 
     // Reference to a new entry in the database
-    const newEntryRef = ref(db, 'entries').push();
+    const entriesRef = ref(db, 'entries');
+    const newEntryRef = push(entriesRef);
 
     // Set the data in the database
     set(newEntryRef, {
