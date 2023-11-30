@@ -19,6 +19,42 @@
 
 
 
-    <script src="index.js" type="module"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, set, push, child  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDRiQbWnJ5zywtjlJop_-VgnOWvq2n_bf0",
+          authDomain: "journal272-8d5d2.firebaseapp.com",
+          databaseURL: "https://journal272-8d5d2-default-rtdb.firebaseio.com",
+          projectId: "journal272-8d5d2",
+          storageBucket: "journal272-8d5d2.appspot.com",
+          messagingSenderId: "319546048347",
+          appId: "1:319546048347:web:c0eda1244ad5194fbee47e"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase();
+
+        submit.addEventListener('click', (e)=> {
+
+            const userId = push(child(ref(database), "users")).key;
+            set(ref(database, 'users/' + userId), {
+                title: document.getElementById('title').value,
+                entry: document.getElementById('entry').value
+            })
+                .then(() => {
+                    alert("data submitted!");
+                })
+                .catch((error) => {
+                    alert(error);
+                });
+        });
+      </script>
 </body>
 </html>
