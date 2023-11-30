@@ -41,7 +41,7 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase();
 
-        submit.addEventListener('click', (e)=> {
+        document.getElementById('journalForm').addEventListener('submit', (e)=> {
 
             const userId = push(child(ref(database), "users")).key;
             set(ref(database, 'users/' + userId), {
