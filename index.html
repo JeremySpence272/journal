@@ -4,21 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>journal272</title>
-</head>
-<body>
-    <h1>Journal Entry</h1>
-
-    <!-- Simple form for title and text -->
-    <form id="journalForm">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br><br>
-        <label for="entry">Text:</label><br>
-        <textarea id="entry" name="entry"></textarea><br><br>
-        <input type="submit" value="Submit">
-    </form>
-
-
-
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -56,5 +41,21 @@
                 });
         });
       </script>
+</head>
+<body>
+    <h1>Journal Entry</h1>
+
+    <!-- Simple form for title and text -->
+    <form id="journalForm">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br><br>
+        <label for="entry">Text:</label><br>
+        <textarea id="entry" name="entry"></textarea><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+    
 </body>
 </html>
