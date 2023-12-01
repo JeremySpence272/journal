@@ -53,7 +53,7 @@
                 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var yyyy = today.getFullYear();
 
-                today = mm + '/' + dd + '/' + yyyy;
+                today = mm + '-' + dd + '-' + yyyy;
 
                 const userId = push(child(ref(database), "users")).key;
                 set(ref(database, 'date/' + today), {
@@ -61,7 +61,7 @@
                     entry: entryInput.value
                 })
                 .then(() => {
-                    alert("Data submitted!");
+                    alert("Data submitted! "+ today);
                 })
                 .catch((error) => {
                     alert(error);
