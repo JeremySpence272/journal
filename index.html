@@ -47,8 +47,16 @@
             const entryInput = document.getElementById('entry');
 
             if (titleInput && entryInput) {
+
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+
+                today = mm + '/' + dd + '/' + yyyy;
+
                 const userId = push(child(ref(database), "users")).key;
-                set(ref(database, 'users/' + userId), {
+                set(ref(database, 'date/' + today), {
                     title: titleInput.value,
                     entry: entryInput.value
                 })
