@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+import { getDatabase, ref, set, get, child, update, remove } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -22,16 +22,37 @@ form.addEventListener('submit', (e) => {
     var title = document.getElementById("title").value;
     var entry = document.getElementById("entry").value;
 
-    var today = new Date().toUTCString();
+    var today = new Date().toJSON().slice(0, 10);
 
     set(ref(database, 'date/' + today), {
         title: title,
         entry: entry
     })
-        .then(() => {
-            alert("Submitted " + today);
-        })
-        .catch((error) => {
-            alert(error);
-        });
+    .then(() => {
+        alert("Submitted " + today);
+    })
+    .catch((error) => {
+        alert(error);
+    });
+});
+
+document.getElementById('populateData').addEventListener('click', (e) => {
+    const dataTitle = document.getElementById("dataTitle");
+    const dataEntry = document.getElementById("dataEntry");
+    var today = new Date().toJSON().slice(0, 10);
+
+    const dbRef = ref(database);
+
+    get(child(dbRef, 'date/' + today)).then((snapshot)=>{
+        if(snapshot.exists()) {
+            console.log(snapshot.val());
+            let dataTitleVal = snapshot.val().title;
+            let dataEntryVal = snapshot.val().entry;
+            dataTitle.innerHTML = dataTitleVal;
+            dataEntry.innerHTML = dataEntryVal;
+        }
+    })
+    .catch((error) => {
+        alert(error);
+    });
 });
