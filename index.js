@@ -19,10 +19,6 @@ const form = document.getElementById("journalForm");
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    write();
-});
-
-function write() {
     var title = document.getElementById("title").value;
     var entry = document.getElementById("entry").value;
 
@@ -38,4 +34,4 @@ function write() {
         .catch((error) => {
             alert(error);
         });
-}
+});
