@@ -22,19 +22,12 @@ const database = getDatabase();
 const form = document.getElementById('journalForm');
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent default form submission
-    document.getElementById("journalForm").reset()
-
     const titleInput = document.getElementById('title');
     const entryInput = document.getElementById('entry');
 
     if (titleInput && entryInput) {
 
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-
-        today = mm + '-' + dd + '-' + yyyy;
+        var today = new Date().toUTCString();
 
         set(ref(database, 'date/' + today), {
             title: titleInput.value,
@@ -49,4 +42,6 @@ form.addEventListener('submit', (e) => {
     } else {
         console.error('Form elements not found');
     }
+
+    document.getElementById("journalForm").reset()
 });
