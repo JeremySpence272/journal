@@ -1,5 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-import { getDatabase, ref, set, get, child, update, remove } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+import { 
+    getDatabase, 
+    ref, 
+    set, 
+    get, 
+    child } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -56,3 +61,4 @@ document.getElementById('populateData').addEventListener('click', (e) => {
         alert(error);
     });
 });
+
