@@ -29,6 +29,7 @@ function updateDateLabel() {
 
 updateDateLabel();
 
+// TO DO LIST FUNCTIONS
 const toDoListForm = document.getElementById("toDoListForm");
 const toDoList = document.getElementById("toDoList");
 let itemID = 1; 
@@ -69,7 +70,7 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
 
     const today = new Date().toJSON().slice(0, 10);
 
-    set(ref(database, `DateID_${today}`), {
+    set(ref(database, `DateID_${today}/ToDoList`), {
         toDoListItems
     })
         .then(() => {
@@ -79,3 +80,139 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
             alert(error);
         });
 });
+
+
+// RECAP LIST FUNCTIONS
+
+const recapListForm = document.getElementById("dailyRecapForm");
+
+recapListForm.addEventListener('submit', function(e) {
+    e.preventDefault(); 
+    
+    const thing = document.getElementById("recapThing").value;
+    
+    const listItem = document.createElement("li");
+    listItem.textContent = `Thing: ${thing}`;
+    recapList.appendChild(listItem);
+
+    document.getElementById("recapThing").value = "";
+});
+
+const recapList = document.getElementById("recapList");
+
+document.getElementById("uploadRecapListToFirebase").addEventListener('click', function() {
+    const recapListItems = [];
+    document.querySelectorAll("#recapList li").forEach((item) => {
+        const text = item.textContent;
+
+        const recapItem = {
+            thing: text.replace('Thing: ', '')
+        };
+
+        recapListItems.push(recapItem);
+    });
+
+    const today = new Date().toJSON().slice(0, 10);
+
+    set(ref(database, `DateID_${today}/RecapList`), {
+        recapListItems
+    })
+        .then(() => {
+            alert("Recap List Uploaded to Firebase");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+});
+
+// BOOK NOTES FUNCTIONS
+
+document.getElementById("bookNotesForm").addEventListener('submit', function(e) {
+    e.preventDefault(); 
+    
+    const chapterTitle = document.getElementById("chapterTitle").value;
+    const pageNumber = document.getElementById("pageNumber").value;
+    const note = document.getElementById("noteContent").value;
+    
+    const bookNotesList = document.getElementById("bookNotesList");
+    let chapterFound = false;
+
+    Array.from(bookNotesList.children).forEach((chapter) => {
+        if (chapter.textContent.startsWith(`- ${chapterTitle}:`)) {
+            const subList = chapter.querySelector('ul');
+
+            const noteItem = document.createElement("li");
+            noteItem.textContent = `- page ${pageNumber}: ${note}`;
+            subList.appendChild(noteItem);
+
+            chapterFound = true;
+        }
+    });
+
+    if (!chapterFound) {
+        const listItem = document.createElement("li");
+        const subList = document.createElement("ul");
+        const noteItem = document.createElement("li");
+
+        listItem.textContent = `- ${chapterTitle}:`;
+        noteItem.textContent = `- page ${pageNumber}: ${note}`;
+
+        subList.appendChild(noteItem);
+        listItem.appendChild(subList);
+        bookNotesList.appendChild(listItem);
+    }
+
+    document.getElementById("pageNumber").value = "";
+    document.getElementById("noteContent").value = "";
+});
+
+// Function to handle upload of book notes to Firebase
+document.getElementById("uploadBookNotesToFirebase").addEventListener('click', function() {
+    console.log("button cicked")
+    const bookNotesList = document.getElementById("bookNotesList");
+
+    const chaptersData = {};
+    if (bookNotesList) {
+        bookNotesList.querySelectorAll("li").forEach((chapterItem) => {
+            const chapterTitle = chapterItem.textContent.split(':')[1].trim();
+            const notesList = chapterItem.querySelector("ul");
+    
+            const notesData = {};
+    
+            notesList.querySelectorAll("li").forEach((noteItem) => {
+                const pageNote = noteItem.textContent.split(':');
+                const page = pageNote[0].replace('page', '').trim();
+                const note = pageNote[1].trim();
+    
+                const noteID = `NoteID_${Object.keys(notesData).length + 1}`;
+                notesData[noteID] = { page, note };
+            });
+    
+            const chapterID = `ChapterID_${Object.keys(chaptersData).length + 1}`;
+            chaptersData[chapterID] = {
+                Title: chapterTitle,
+                Notes: notesData
+            };
+        });
+    } else {
+        console.log("bookNotesList is null or undefined.");
+    }
+    
+
+    const today = new Date().toJSON().slice(0, 10);
+
+    set(ref(database, `DateID_${today}/BookNotes`), {
+        chaptersData
+    })
+        .then(() => {
+            alert("Book Notes Uploaded to Firebase");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+});
+
+
+
+
+
