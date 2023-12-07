@@ -11,7 +11,6 @@
     <!-- To-Do List Form -->
     <form id="toDoListForm">
         <h2>To-Do List</h2>
-        <p>ID Number: <span id="itemID">1</span></p>
         <label for="toDoTime">Time:</label>
         <input type="text" id="toDoTime" name="toDoTime"><br><br>
         <label for="toDoThing">Thing:</label>
@@ -43,6 +42,8 @@
     <!-- Book Notes Form -->
     <form id="bookNotesForm">
         <h2>Book Notes</h2>
+        <label for="booktTitle">Book Title:</label>
+        <input type="text" id="bookTitle" name="bookTitle"><br><br>
         <label for="chapterTitle">Chapter Title:</label>
         <input type="text" id="chapterTitle" name="chapterTitle"><br><br>
         <label for="pageNumber">Page Number:</label>
@@ -52,6 +53,7 @@
         <input type="submit" value="Add Note">
     </form>
 
+    <p id="bookName"></p>
     <ul id="bookNotesList"></ul>
 
     <br/>
@@ -66,6 +68,13 @@
         <textarea id="miscThoughts" name="miscThoughts"></textarea><br><br>
         <input type="submit" value="Add Thoughts">
     </form>
+
+    <ul id="thoughtsList"></ul>
+
+    <br/>
+    <button id="uploadThoughtsListToFirebase">Upload Thought List to Firebase</button>
+    <br/>
+    <br/>
 
     <script type="module" src="journal.js"></script>
     <!-- <script type="module" src="index.js"></script> -->

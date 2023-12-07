@@ -1,10 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-import { 
-    getDatabase, 
-    ref, 
-    set, 
-    get, 
-    child } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+import {
+    getDatabase,
+    ref,
+    set,
+    get,
+    child
+} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -30,42 +31,38 @@ function updateDateLabel() {
 updateDateLabel();
 
 // TO DO LIST FUNCTIONS
+
 const toDoListForm = document.getElementById("toDoListForm");
 const toDoList = document.getElementById("toDoList");
-let itemID = 1; 
 
-const itemIDSpan = document.getElementById("itemID");
+toDoListForm.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-toDoListForm.addEventListener('submit', function(e) {
-    e.preventDefault(); 
-    
     const time = document.getElementById("toDoTime").value;
     const thing = document.getElementById("toDoThing").value;
-    
-    const listItem = document.createElement("li");
-    listItem.textContent = `ItemID_${itemID} => Thing: ${thing} @ Time: ${time}`;
-    toDoList.appendChild(listItem);
 
-    itemID++;
-    itemIDSpan.textContent = itemID;
+    const listItem = document.createElement("li");
+    listItem.textContent = `Thing: ${thing}${time ? ` @ Time: ${time}` : ''}`;
+    toDoList.appendChild(listItem);
 
     document.getElementById("toDoTime").value = "";
     document.getElementById("toDoThing").value = "";
 });
 
 
-document.getElementById("uploadToDoListToFirebase").addEventListener('click', function() {
+document.getElementById("uploadToDoListToFirebase").addEventListener('click', function () {
     const toDoListItems = [];
     document.querySelectorAll("#toDoList li").forEach((item) => {
-        const text = item.textContent.split(' => ');
-        const thingTime = text[1].split(' @ Time: ');
+        const text = item.textContent.split(' @ Time: ');
+        const thing = text[0].replace('Thing: ', '');
+        const time = text[1] ? text[1] : ''; // If time is not available, assign an empty string
 
         const toDoItem = {
-            time: thingTime[1],
-            thing: thingTime[0].replace('Thing: ', '')
+            time,
+            thing
         };
 
-        toDoListItems.push(toDoItem); 
+        toDoListItems.push(toDoItem);
     });
 
     const today = new Date().toJSON().slice(0, 10);
@@ -81,16 +78,15 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
         });
 });
 
-
 // RECAP LIST FUNCTIONS
 
 const recapListForm = document.getElementById("dailyRecapForm");
 
-recapListForm.addEventListener('submit', function(e) {
-    e.preventDefault(); 
-    
+recapListForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
     const thing = document.getElementById("recapThing").value;
-    
+
     const listItem = document.createElement("li");
     listItem.textContent = `Thing: ${thing}`;
     recapList.appendChild(listItem);
@@ -100,7 +96,7 @@ recapListForm.addEventListener('submit', function(e) {
 
 const recapList = document.getElementById("recapList");
 
-document.getElementById("uploadRecapListToFirebase").addEventListener('click', function() {
+document.getElementById("uploadRecapListToFirebase").addEventListener('click', function () {
     const recapListItems = [];
     document.querySelectorAll("#recapList li").forEach((item) => {
         const text = item.textContent;
@@ -127,14 +123,19 @@ document.getElementById("uploadRecapListToFirebase").addEventListener('click', f
 
 // BOOK NOTES FUNCTIONS
 
-document.getElementById("bookNotesForm").addEventListener('submit', function(e) {
-    e.preventDefault(); 
-    
+document.getElementById("bookNotesForm").addEventListener('submit', function (e) {
+    e.preventDefault();
+
+
+    const bookName = document.getElementById("bookTitle").value;
     const chapterTitle = document.getElementById("chapterTitle").value;
     const pageNumber = document.getElementById("pageNumber").value;
     const note = document.getElementById("noteContent").value;
-    
+
     const bookNotesList = document.getElementById("bookNotesList");
+
+    document.getElementById("bookName").innerHTML = bookName;
+
     let chapterFound = false;
 
     Array.from(bookNotesList.children).forEach((chapter) => {
@@ -167,37 +168,47 @@ document.getElementById("bookNotesForm").addEventListener('submit', function(e) 
 });
 
 // Function to handle upload of book notes to Firebase
-document.getElementById("uploadBookNotesToFirebase").addEventListener('click', function() {
-    console.log("button cicked")
-    const bookNotesList = document.getElementById("bookNotesList");
+document.getElementById("uploadBookNotesToFirebase").addEventListener('click', function () {
 
+    const bookNotesList = document.getElementById('bookNotesList');
     const chaptersData = {};
+
+    const bookTitle = document.getElementById("bookName").innerText
+
     if (bookNotesList) {
-        bookNotesList.querySelectorAll("li").forEach((chapterItem) => {
-            const chapterTitle = chapterItem.textContent.split(':')[1].trim();
-            const notesList = chapterItem.querySelector("ul");
-    
-            const notesData = {};
-    
-            notesList.querySelectorAll("li").forEach((noteItem) => {
-                const pageNote = noteItem.textContent.split(':');
-                const page = pageNote[0].replace('page', '').trim();
-                const note = pageNote[1].trim();
-    
-                const noteID = `NoteID_${Object.keys(notesData).length + 1}`;
-                notesData[noteID] = { page, note };
-            });
-    
-            const chapterID = `ChapterID_${Object.keys(chaptersData).length + 1}`;
-            chaptersData[chapterID] = {
-                Title: chapterTitle,
-                Notes: notesData
-            };
+        let chapterID = 1;
+        console.log(bookNotesList)
+        bookNotesList.querySelectorAll('li').forEach((chapterItem) => {
+            const chapterTitle = chapterItem.textContent.split(':')[0].trim() + " ~ " + bookTitle;
+
+            if (chapterTitle.startsWith('- Chapter')) {
+                const notesList = chapterItem.querySelector('ul');
+
+                const notesData = {};
+                if (notesList) {
+                    notesList.querySelectorAll('li').forEach((noteItem) => {
+                        const noteContent = noteItem.textContent.split(':');
+                        const page = noteContent[0].replace('- page', '').trim();
+                        const note = noteContent[1].trim();
+
+                        const noteID = `NoteID_${Object.keys(notesData).length + 1}`;
+                        notesData[noteID] = { page, note };
+                    });
+                }
+
+                chaptersData[`ChapterID_${chapterID}`] = {
+                    Title: chapterTitle,
+                    Notes: notesData,
+                };
+
+                chapterID++;
+            }
         });
     } else {
-        console.log("bookNotesList is null or undefined.");
+        console.log('bookNotesList is null or undefined.');
     }
-    
+
+    console.log(chaptersData);
 
     const today = new Date().toJSON().slice(0, 10);
 
@@ -213,6 +224,51 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 });
 
 
+// MISC NOTES FUNCTIONS
 
+const miscThoughtsForm = document.getElementById("miscThoughtsForm");
+const thoughtsList = document.getElementById("thoughtsList");
+
+miscThoughtsForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    console.log('adding thoughts')
+
+    const thought = document.getElementById("miscThoughts").value;
+
+    const listItem = document.createElement("li");
+    listItem.textContent = `Thought: ${thought}`;
+    thoughtsList.appendChild(listItem);
+
+    document.getElementById("miscThoughts").value = "";
+});
+
+
+
+document.getElementById("uploadThoughtsListToFirebase").addEventListener('click', function () {
+    const thoughtListItems = [];
+    document.querySelectorAll("#thoughtsList li").forEach((item) => {
+        const text = item.textContent;
+        console.log(this.textContent)
+        const thoughtItem = {
+            thought: text.replace('Thought: ', '')
+        };
+
+        thoughtListItems.push(thoughtItem);
+    });
+
+    console.log(thoughtListItems)
+
+    const today = new Date().toJSON().slice(0, 10);
+
+    set(ref(database, `DateID_${today}/ThoughtsList`), {
+        thoughtListItems
+    })
+        .then(() => {
+            alert("Thoughts List Uploaded to Firebase");
+        })
+        .catch((error) => {
+            alert(error);
+        });
+});
 
 
