@@ -130,7 +130,7 @@ document.getElementById("bookNotesForm").addEventListener('submit', function (e)
     const bookName = document.getElementById("bookTitle").value;
     const chapterTitle = document.getElementById("chapterTitle").value;
     const pageNumber = document.getElementById("pageNumber").value;
-    const note = document.getElementById("noteContent").value;
+    const note = JSON.stringify(document.getElementById("noteContent").value);
 
     const bookNotesList = document.getElementById("bookNotesList");
 
@@ -226,17 +226,19 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 
 // MISC NOTES FUNCTIONS
 
+
+
 const miscThoughtsForm = document.getElementById("miscThoughtsForm");
 const thoughtsList = document.getElementById("thoughtsList");
 
 miscThoughtsForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    console.log('adding thoughts')
+    
 
-    const thought = document.getElementById("miscThoughts").value;
-
+    const thought = JSON.stringify(document.getElementById("miscThoughts").value);
+    
     const listItem = document.createElement("li");
-    listItem.textContent = `Thought: ${thought}`;
+    listItem.textContent = thought;
     thoughtsList.appendChild(listItem);
 
     document.getElementById("miscThoughts").value = "";
