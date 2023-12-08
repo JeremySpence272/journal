@@ -21,16 +21,15 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 document.getElementById("getToDoList").addEventListener('click', function () {
-    // const today = new Date();
-    // const ystdy = new Date(today);
-    // ystdy.setDate(today.getDate() - 1);
-    // const yesterday = ystdy.toJSON().slice(0, 10);
+    const today = new Date();
+    const ystdy = new Date(today);
+    ystdy.setDate(today.getDate() - 1);
+    const yesterday = ystdy.toJSON().slice(0, 10);
 
-    // console.log(yesterday)
+    console.log(yesterday)
 
-    const today = new Date().toJSON().slice(0, 10);
     const dbRef = ref(database);
-    get(child(dbRef, `DateID_${today}/ToDoList`)).then((snapshot) => {
+    get(child(dbRef, `DateID_${yesterday}/ToDoList`)).then((snapshot) => {
         if (snapshot.exists()) {
             console.log(snapshot.val());
             printToDoList(snapshot.val())

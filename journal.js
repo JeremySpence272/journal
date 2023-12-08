@@ -66,7 +66,7 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
     });
 
     const today = new Date().toJSON().slice(0, 10);
-
+    
     set(ref(database, `DateID_${today}/ToDoList`), {
         toDoListItems
     })
