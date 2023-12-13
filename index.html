@@ -3,81 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>journal272</title>
+    <title>Journal272</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    <h1>Journal272</h1>
-    <h4><a href="today.html">Today ></a></h4>
-    <h4 id="dateLabel">Current Date</h4>
-    <!-- To-Do List Form -->
-    <form id="toDoListForm">
-        <h2>To-Do List</h2>
-        <label for="toDoTime">Time:</label>
-        <input type="text" id="toDoTime" name="toDoTime"><br><br>
-        <label for="toDoThing">Thing:</label>
-        <input type="text" id="toDoThing" name="toDoThing"><br><br>
-        <input type="submit" value="Add To-Do">
-    </form>
 
-    <ul id="toDoList"></ul>
+<div class="container mt-3">
+    <h1 class="text-center">Journal272</h1>
+    <h4 class="text-right" style="text-decoration: underline;"><a href="today.html">Today</a></h4>
+    <h4 id="dateLabel" class="text-right">Current Date</h4>
+    
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="to-do-tab" data-toggle="tab" href="#toDo" role="tab" aria-controls="toDo" aria-selected="true">To Do</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="recap-tab" data-toggle="tab" href="#recap" role="tab" aria-controls="recap" aria-selected="false">Recap</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="book-notes-tab" data-toggle="tab" href="#bookNotes" role="tab" aria-controls="bookNotes" aria-selected="false">Book Notes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="misc-notes-tab" data-toggle="tab" href="#miscNotes" role="tab" aria-controls="miscNotes" aria-selected="false">Misc. Notes</a>
+        </li>
+    </ul>
 
-    <br/>
-    <button id="uploadToDoListToFirebase">Upload ToDo List to Firebase</button>
-    <br/>
-    <br/>
-    <!-- Daily Recap Form -->
-    <form id="dailyRecapForm">
-        <h2>Daily Recap</h2>
-        <label for="recapThing">Thing Done:</label>
-        <input type="text" id="recapThing" name="recapThing"><br><br>
-        <input type="submit" value="Add Recap">
-    </form>
+    <!-- Tab Content -->
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="toDo" role="tabpanel" aria-labelledby="to-do-tab">
+            <!-- To-Do List Form -->
+            <form id="toDoListForm">
+                <div class="form-group">
+                    <label for="toDoTime">Time:</label>
+                    <input type="text" id="toDoTime" name="toDoTime" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="toDoThing">Thing:</label>
+                    <input type="text" id="toDoThing" name="toDoThing" class="form-control">
+                </div>
+                <input type="submit" value="Add To-Do" class="btn btn-primary">
+            </form>
+    
+            <ul id="toDoList" class="list-group"></ul>
+    
+            <button id="uploadToDoListToFirebase" class="btn btn-secondary mt-2">Upload ToDo List to Firebase</button>
+        </div>
+        <div class="tab-pane fade" id="recap" role="tabpanel" aria-labelledby="recap-tab">
+            <!-- Daily Recap Form -->
+            <form id="dailyRecapForm">
+                <div class="form-group">
+                    <label for="recapThing">Thing Done:</label>
+                    <input type="text" id="recapThing" name="recapThing" class="form-control">
+                </div>
+                <input type="submit" value="Add Recap" class="btn btn-primary">
+            </form>
+    
+            <ul id="recapList" class="list-group"></ul>
+    
+            <button id="uploadRecapListToFirebase" class="btn btn-secondary mt-2">Upload Recap List to Firebase</button>
+        </div>
+        <div class="tab-pane fade" id="bookNotes" role="tabpanel" aria-labelledby="book-notes-tab">
+            <!-- Book Notes Form -->
+            <form id="bookNotesForm">
+                <div class="form-group">
+                    <label for="bookTitle">Book Title:</label>
+                    <input type="text" id="bookTitle" name="bookTitle" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="chapterTitle">Chapter Title:</label>
+                    <input type="text" id="chapterTitle" name="chapterTitle" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pageNumber">Page Number:</label>
+                    <input type="number" id="pageNumber" name="pageNumber" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="noteContent">Note:</label>
+                    <textarea id="noteContent" name="noteContent" class="form-control" rows="5"></textarea>
+                </div>
+                <input type="submit" value="Add Note" class="btn btn-primary">
+            </form>
+            <br/>
+            <p id="bookName"></p>
+            <ul id="bookNotesList" class="list-group"></ul>
+    
+            <button id="uploadBookNotesToFirebase" class="btn btn-secondary mt-2">Upload Book Notes to Firebase</button>
+        </div>
+        <div class="tab-pane fade" id="miscNotes" role="tabpanel" aria-labelledby="misc-notes-tab">
+            <!-- Miscellaneous Thoughts Form -->
+            <form id="miscThoughtsForm">
+                <div class="form-group">
+                    <label for="miscThoughts">Thoughts:</label>
+                    <textarea id="miscThoughts" name="miscThoughts" class="form-control" rows="5"></textarea>
+                </div>
+                <input type="submit" value="Add Thoughts" class="btn btn-primary">
+            </form>
+    
+            <ul id="thoughtsList" class="list-group"></ul>
+    
+            <button id="uploadThoughtsListToFirebase" class="btn btn-secondary mt-2">Upload Thought List to Firebase</button>
+        </div>
+    </div>
+    
+</div>
 
-    <ul id="recapList"></ul>
-
-    <br/>
-    <button id="uploadRecapListToFirebase">Upload Recap List to Firebase</button>
-    <br/>
-    <br/>
-
-    <!-- Book Notes Form -->
-    <form id="bookNotesForm">
-        <h2>Book Notes</h2>
-        <label for="booktTitle">Book Title:</label>
-        <input type="text" id="bookTitle" name="bookTitle"><br><br>
-        <label for="chapterTitle">Chapter Title:</label>
-        <input type="text" id="chapterTitle" name="chapterTitle"><br><br>
-        <label for="pageNumber">Page Number:</label>
-        <input type="number" id="pageNumber" name="pageNumber"><br><br>
-        <label for="noteContent">Note:</label>
-        <textarea rows="5" cols="40" id="noteContent" name="noteContent"></textarea><br><br>
-        <input type="submit" value="Add Note">
-    </form>
-
-    <p id="bookName"></p>
-    <ul id="bookNotesList"></ul>
-
-    <br/>
-    <button id="uploadBookNotesToFirebase">Upload Book Notes to Firebase</button>
-    <br/>
-    <br/>
-
-    <!-- Miscellaneous Thoughts Form -->
-    <form id="miscThoughtsForm">
-        <h2>Miscellaneous Thoughts</h2>
-        <label for="miscThoughts">Thoughts:</label>
-        <textarea rows="5" cols="40" id="miscThoughts" name="miscThoughts"></textarea><br><br>
-        <input type="submit" value="Add Thoughts">
-    </form>
-
-    <ul id="thoughtsList"></ul>
-
-    <br/>
-    <button id="uploadThoughtsListToFirebase">Upload Thought List to Firebase</button>
-    <br/>
-    <br/>
-
-    <script type="module" src="journal.js"></script>
-    <!-- <script type="module" src="index.js"></script> -->
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Custom JavaScript -->
+<script type="module" src="journal.js"></script>
 </body>
 </html>

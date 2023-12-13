@@ -196,13 +196,14 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 
             if (chapterTitle.startsWith('- Chapter')) {
                 const notesList = chapterItem.querySelector('ul');
-
+                console.log(notesList)
                 const notesData = {};
                 if (notesList) {
                     notesList.querySelectorAll('li').forEach((noteItem) => {
-                        const noteContent = noteItem.textContent.split(':');
-                        const page = noteContent[0].replace('- page', '').trim();
-                        const note = noteContent[1].trim();
+                        // Split only at the first colon
+                        const noteParts = noteItem.textContent.split(/:(.+)/);
+                        const page = noteParts[0].replace('- page', '').trim();
+                        const note = noteParts[1] ? noteParts[1].trim() : '';
 
                         const noteID = `NoteID_${Object.keys(notesData).length + 1}`;
                         notesData[noteID] = { page, note };
@@ -239,6 +240,8 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
             alert(error);
         });
 });
+
+
 
 
 // MISC NOTES FUNCTIONS
