@@ -52,7 +52,7 @@ function printToDoList(data) {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
 
-        let textContent = item.thing;
+        let textContent = "  " + item.thing;
         if (item.time !== '') {
             textContent += ` @ ${item.time}`;
         }

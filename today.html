@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Today List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Today To-Do List</h1>
-    <h4><a href="index.html">&lt; Back</a></h4>
+    <div class="container mt-3">
+        <h1 class="text-center">Today To-Do List</h1>
+        <h4 class="mb-3"><a href="index.html">Back</a></h4>
 
-    <button id="getToDoList">Get To-Do List</button>
-    <ul style="list-style-type: none;" id="todayList"></ul>
+        <button id="getToDoList" class="btn btn-secondary mb-2">Get To-Do List</button>
+        <ul id="todayList" style="list-style-type: none;" class="list-group"></ul>
+    </div>
 
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JavaScript -->
     <script type="module" src="todayList.js"></script>
 </body>
 </html>
