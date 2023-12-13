@@ -49,11 +49,9 @@ function printToDoList(data) {
     data.toDoListItems.forEach(item => {
         const listItem = document.createElement('li');
         
-        // Create a checkbox
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
 
-        // Construct the text content of the list item
         let textContent = item.thing;
         if (item.time !== '') {
             textContent += ` @ ${item.time}`;
@@ -61,12 +59,9 @@ function printToDoList(data) {
 
         listItem.textContent = textContent;
 
-        // Append checkbox and text to the list item
         listItem.insertBefore(checkbox, listItem.firstChild);
-
         todayList.appendChild(listItem);
 
-        // Add event listener to each checkbox
         checkbox.addEventListener('change', function() {
             if (this.checked) {
                 listItem.style.textDecoration = 'line-through'; // Apply strikethrough

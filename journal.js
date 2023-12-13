@@ -18,6 +18,11 @@ const firebaseConfig = {
     appId: "1:319546048347:web:c0eda1244ad5194fbee47e"
 };
 
+// const today = new Date();
+// const ystdy = new Date(today);
+// ystdy.setDate(today.getDate() - 1);
+// const yesterday = ystdy.toJSON().slice(0, 10);
+
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
@@ -65,7 +70,11 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
         toDoListItems.push(toDoItem);
     });
 
-    const today = new Date().toJSON().slice(0, 10);
+    const date = new Date();
+    const estOffset = -5 * 60; // EST is UTC-5 hours
+    const localOffset = date.getTimezoneOffset();
+    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
+    const today = estDate.toJSON().slice(0, 10);
     
     set(ref(database, `DateID_${today}/ToDoList`), {
         toDoListItems
@@ -108,7 +117,11 @@ document.getElementById("uploadRecapListToFirebase").addEventListener('click', f
         recapListItems.push(recapItem);
     });
 
-    const today = new Date().toJSON().slice(0, 10);
+    const date = new Date();
+    const estOffset = -5 * 60; // EST is UTC-5 hours
+    const localOffset = date.getTimezoneOffset();
+    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
+    const today = estDate.toJSON().slice(0, 10);
 
     set(ref(database, `DateID_${today}/RecapList`), {
         recapListItems
@@ -210,7 +223,11 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 
     console.log(chaptersData);
 
-    const today = new Date().toJSON().slice(0, 10);
+    const date = new Date();
+    const estOffset = -5 * 60; // EST is UTC-5 hours
+    const localOffset = date.getTimezoneOffset();
+    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
+    const today = estDate.toJSON().slice(0, 10);
 
     set(ref(database, `DateID_${today}/BookNotes`), {
         chaptersData
@@ -260,7 +277,11 @@ document.getElementById("uploadThoughtsListToFirebase").addEventListener('click'
 
     console.log(thoughtListItems)
 
-    const today = new Date().toJSON().slice(0, 10);
+    const date = new Date();
+    const estOffset = -5 * 60; // EST is UTC-5 hours
+    const localOffset = date.getTimezoneOffset();
+    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
+    const today = estDate.toJSON().slice(0, 10);
 
     set(ref(database, `DateID_${today}/ThoughtsList`), {
         thoughtListItems
