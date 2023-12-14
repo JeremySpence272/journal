@@ -3,6 +3,7 @@ import {
     getDatabase,
     ref,
     set,
+    update,
     get,
     child
 } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
@@ -18,22 +19,64 @@ const firebaseConfig = {
     appId: "1:319546048347:web:c0eda1244ad5194fbee47e"
 };
 
-// const today = new Date();
-// const ystdy = new Date(today);
-// ystdy.setDate(today.getDate() - 1);
-// const yesterday = ystdy.toJSON().slice(0, 10);
+const today = new Date();
+const ystdy = new Date(today);
+ystdy.setDate(today.getDate() - 1);
+const yesterday = ystdy.toJSON().slice(0, 10);
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const date = new Date();
+const estOffset = -5 * 60; // EST is UTC-5 hours
+const localOffset = date.getTimezoneOffset();
+const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
+const today = estDate.toJSON().slice(0, 10);
 
 function updateDateLabel() {
-    var today = new Date().toJSON().slice(0, 10);
     console.log(today);
     document.getElementById("dateLabel").innerHTML = today;
 }
 
 updateDateLabel();
+
+
+// UPDATE RECORDS
+// function fetchPostData(dateId) {
+//     const postRef = ref(database, dateId);
+  
+//     return get(postRef).then((snapshot) => {
+//       if (snapshot.exists()) {
+//         return snapshot.val();
+//       } else {
+//         console.log("No data available for " + dateId);
+//         return null;
+//       }
+//     }).catch((error) => {
+//       console.error(error);
+//       throw error; 
+//     });
+//   }
+// function updatePostDate(oldDateId, newDateId) {
+//     const oldDateRef = oldDateId;
+//     const newDateRef = newDateId;
+
+//     const updates = {};
+
+//     fetchPostData(oldDateRef).then(postData => {
+//       updates[newDateRef] = postData;
+//       updates[oldDateRef] = null;
+//       return update(ref(database), updates);
+//     }).then(() => {
+//       console.log("Date ID updated successfully.");
+//     }).catch(error => {
+//       console.error("Error updating Date ID: ", error);
+//     });
+//   }
+  
+//   updatePostDate('DateID_2023-12-15', 'DateID_2023-12-14');
+
+
 
 // TO DO LIST FUNCTIONS
 
@@ -70,13 +113,9 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
         toDoListItems.push(toDoItem);
     });
 
-    const date = new Date();
-    const estOffset = -5 * 60; // EST is UTC-5 hours
-    const localOffset = date.getTimezoneOffset();
-    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
-    const today = estDate.toJSON().slice(0, 10);
     
-    set(ref(database, `DateID_${today}/ToDoList`), {
+    
+    set(ref(database, `DateID_${yesterday}/ToDoList`), {
         toDoListItems
     })
         .then(() => {
@@ -117,13 +156,7 @@ document.getElementById("uploadRecapListToFirebase").addEventListener('click', f
         recapListItems.push(recapItem);
     });
 
-    const date = new Date();
-    const estOffset = -5 * 60; // EST is UTC-5 hours
-    const localOffset = date.getTimezoneOffset();
-    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
-    const today = estDate.toJSON().slice(0, 10);
-
-    set(ref(database, `DateID_${today}/RecapList`), {
+    set(ref(database, `DateID_${yesterday}/RecapList`), {
         recapListItems
     })
         .then(() => {
@@ -224,13 +257,7 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 
     console.log(chaptersData);
 
-    const date = new Date();
-    const estOffset = -5 * 60; // EST is UTC-5 hours
-    const localOffset = date.getTimezoneOffset();
-    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
-    const today = estDate.toJSON().slice(0, 10);
-
-    set(ref(database, `DateID_${today}/BookNotes`), {
+    set(ref(database, `DateID_${yesterday}/BookNotes`), {
         chaptersData
     })
         .then(() => {
@@ -280,13 +307,7 @@ document.getElementById("uploadThoughtsListToFirebase").addEventListener('click'
 
     console.log(thoughtListItems)
 
-    const date = new Date();
-    const estOffset = -5 * 60; // EST is UTC-5 hours
-    const localOffset = date.getTimezoneOffset();
-    const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
-    const today = estDate.toJSON().slice(0, 10);
-
-    set(ref(database, `DateID_${today}/ThoughtsList`), {
+    set(ref(database, `DateID_${yesterday}/ThoughtsList`), {
         thoughtListItems
     })
         .then(() => {
