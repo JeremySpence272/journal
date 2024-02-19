@@ -31,11 +31,11 @@ const date = new Date();
 const estOffset = -5 * 60; // EST is UTC-5 hours
 const localOffset = date.getTimezoneOffset();
 const estDate = new Date(date.getTime() + (localOffset + estOffset) * 60000);
-const today = estDate.toJSON().slice(0, 10);
+const todaysDate = estDate.toJSON().slice(0, 10);
 
 function updateDateLabel() {
-    console.log(today);
-    document.getElementById("dateLabel").innerHTML = today;
+    console.log(todaysDate);
+    document.getElementById("dateLabel").innerHTML = todaysDate;
 }
 
 updateDateLabel();
@@ -115,7 +115,7 @@ document.getElementById("uploadToDoListToFirebase").addEventListener('click', fu
 
     
     
-    set(ref(database, `DateID_${yesterday}/ToDoList`), {
+    set(ref(database, `DateID_${todaysDate}/ToDoList`), {
         toDoListItems
     })
         .then(() => {
@@ -156,7 +156,7 @@ document.getElementById("uploadRecapListToFirebase").addEventListener('click', f
         recapListItems.push(recapItem);
     });
 
-    set(ref(database, `DateID_${yesterday}/RecapList`), {
+    set(ref(database, `DateID_${todaysDate}/RecapList`), {
         recapListItems
     })
         .then(() => {
@@ -257,7 +257,7 @@ document.getElementById("uploadBookNotesToFirebase").addEventListener('click', f
 
     console.log(chaptersData);
 
-    set(ref(database, `DateID_${yesterday}/BookNotes`), {
+    set(ref(database, `DateID_${todaysDate}/BookNotes`), {
         chaptersData
     })
         .then(() => {
@@ -307,7 +307,7 @@ document.getElementById("uploadThoughtsListToFirebase").addEventListener('click'
 
     console.log(thoughtListItems)
 
-    set(ref(database, `DateID_${yesterday}/ThoughtsList`), {
+    set(ref(database, `DateID_${todaysDate}/ThoughtsList`), {
         thoughtListItems
     })
         .then(() => {
